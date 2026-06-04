@@ -169,6 +169,26 @@ main {
   gap: 8px;
 }
 
+.exclusive-notice {
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid #d6c394;
+  border-radius: 5px;
+  background: #fffaf0;
+}
+
+.exclusive-notice strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--brand);
+}
+
+.exclusive-notice p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .case-button {
   width: 100%;
   min-height: 52px;
@@ -351,6 +371,10 @@ main {
   font-weight: 800;
 }
 
+.is-hidden {
+  display: none;
+}
+
 .synthesis-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -460,6 +484,16 @@ main {
 
 .report-step li {
   margin: 4px 0;
+}
+
+.report-feedback {
+  display: block;
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.report-feedback strong {
+  color: var(--ink);
 }
 
 footer {

@@ -35,6 +35,10 @@
     <section class="workspace">
       <aside class="case-list" aria-labelledby="modulos">
         <h2 id="modulos">Módulos clínicos</h2>
+        <div class="exclusive-notice">
+          <strong>Uso exclusivo do aluno-paciente</strong>
+          <p>Escolha o caso sem mostrar esta tela ao aluno-farmacêutico. Durante a entrevista, responda apenas ao que for perguntado e não revele a patologia, a hipótese ou o problema central.</p>
+        </div>
         <div id="case-buttons" class="case-buttons"></div>
       </aside>
 
@@ -81,7 +85,7 @@
           <div id="prompts" class="prompt-list"></div>
         </article>
 
-        <section class="clinical-synthesis" aria-labelledby="sintese">
+        <section class="clinical-synthesis is-hidden" aria-labelledby="sintese">
           <h3 id="sintese">Síntese clínica</h3>
           <div class="synthesis-grid">
             <div>
@@ -99,7 +103,7 @@
           </div>
         </section>
 
-        <section class="final-assessment" aria-labelledby="avaliacao-final">
+        <section class="final-assessment is-hidden" aria-labelledby="avaliacao-final">
           <h3 id="avaliacao-final">Perguntas finais ao aluno-farmacêutico</h3>
           <p>Ao terminar a entrevista, o aluno-paciente faz estas perguntas e marca os acertos conforme o gabarito do caso.</p>
           <div id="final-items" class="final-items"></div>
@@ -107,13 +111,13 @@
 
         <section class="score-panel">
           <button type="button" id="score-button">Calcular etapa</button>
-          <button type="button" id="total-score-button">Calcular pontuação total</button>
-          <button type="button" id="pdf-button">Salvar em PDF</button>
+          <button type="button" id="total-score-button" class="is-hidden">Calcular pontuação total</button>
+          <button type="button" id="pdf-button" class="is-hidden">Salvar em PDF</button>
           <button type="button" id="reset-button" class="secondary">Limpar marcações</button>
           <p id="score-result" class="score-result">Marque os itens realizados durante a entrevista.</p>
         </section>
 
-        <section class="print-report" id="print-report" aria-labelledby="relatorio">
+        <section class="print-report is-hidden" id="print-report" aria-labelledby="relatorio">
           <h3 id="relatorio">Relatório da entrevista</h3>
           <div id="report-content"></div>
         </section>

@@ -61,6 +61,93 @@ const steps = [
   }
 ];
 
+const stepFeedback = {
+  abertura: [
+    {
+      asked: "Quando pergunta identificação e ocupação, o entrevistador contextualiza idade, rotina, linguagem e riscos ocupacionais.",
+      missed: "Sem identificação adequada, a entrevista perde contexto e pode ignorar fatores de risco ligados à idade, trabalho e rotina."
+    },
+    {
+      asked: "Quando pergunta o motivo principal, o entrevistador organiza a prioridade do atendimento a partir da fala do paciente.",
+      missed: "Sem queixa principal clara, a entrevista fica dispersa e pode focar em dados secundários antes do problema real."
+    },
+    {
+      asked: "Quando explica a entrevista, cria vínculo, reduz ansiedade e aumenta a colaboração do paciente.",
+      missed: "Sem explicar o processo, o paciente pode responder pouco, omitir informações ou sentir que está sendo interrogado sem acolhimento."
+    }
+  ],
+  queixa: [
+    {
+      asked: "Quando investiga início e evolução, o entrevistador constrói a linha do tempo e diferencia quadros agudos, crônicos e progressivos.",
+      missed: "Sem cronologia, fica difícil estimar gravidade, urgência e relação entre sintomas, medicamentos e hábitos."
+    },
+    {
+      asked: "Quando pergunta intensidade, frequência, melhora e piora, aproxima o raciocínio da causa provável e dos gatilhos.",
+      missed: "Sem caracterizar o sintoma, o entrevistador pode subestimar gravidade ou deixar passar fatores modificáveis."
+    },
+    {
+      asked: "Quando busca sintomas associados, amplia o diagnóstico diferencial e identifica pistas clínicas sem precisar induzir resposta.",
+      missed: "Sem sintomas associados, há risco de formular hipótese incompleta ou não reconhecer manifestações importantes."
+    }
+  ],
+  medicamentos: [
+    {
+      asked: "Quando investiga medicamentos e adesão, diferencia falha terapêutica verdadeira de uso irregular ou técnica inadequada.",
+      missed: "Sem essa pergunta, o entrevistador pode achar que o tratamento não funciona quando o problema é adesão, dose ou técnica."
+    },
+    {
+      asked: "Quando pergunta automedicação, identifica riscos comuns como anti-inflamatórios, sedativos, chás, antibióticos ou uso prolongado sem indicação.",
+      missed: "Sem investigar automedicação, pode deixar passar uma causa de piora, interação medicamentosa ou efeito adverso evitável."
+    },
+    {
+      asked: "Quando pergunta alergias e reações, aumenta a segurança antes de orientar qualquer conduta.",
+      missed: "Sem esse cuidado, uma orientação aparentemente simples pode expor o paciente a reação ou medicamento inadequado."
+    }
+  ],
+  contexto: [
+    {
+      asked: "Quando pergunta antecedentes e família, identifica risco basal, comorbidades e predisposição clínica.",
+      missed: "Sem antecedentes, a avaliação fica descolada do risco real do paciente e pode minimizar situações importantes."
+    },
+    {
+      asked: "Quando investiga hábitos, encontra fatores modificáveis que sustentam a orientação educativa.",
+      missed: "Sem hábitos, a conduta tende a ficar genérica e menos aplicável à vida do paciente."
+    },
+    {
+      asked: "Quando avalia impacto funcional, mede repercussão do problema na vida diária e ajuda a graduar severidade.",
+      missed: "Sem impacto funcional, o entrevistador pode subestimar sofrimento, limitação, risco ou necessidade de encaminhamento."
+    }
+  ],
+  alerta: [
+    {
+      asked: "Quando pergunta sinais de alerta, identifica situações que mudam a urgência da conduta.",
+      missed: "Sem sinais de alerta, o entrevistador pode manter orientação ambulatorial quando o caso exige avaliação imediata."
+    },
+    {
+      asked: "Quando busca sinais vitais ou dados objetivos, ancora a entrevista em medidas e reduz achismos.",
+      missed: "Sem dados objetivos disponíveis, pode perder evidências de gravidade, descontrole ou necessidade de encaminhamento."
+    },
+    {
+      asked: "Quando reconhece necessidade de atendimento imediato, demonstra segurança clínica e protege o paciente.",
+      missed: "Sem reconhecer urgência, há risco de atraso em cuidado essencial e falsa tranquilização."
+    }
+  ],
+  fechamento: [
+    {
+      asked: "Quando resume o caso, confirma entendimento e permite corrigir informações antes da hipótese final.",
+      missed: "Sem síntese, erros de interpretação podem passar despercebidos e comprometer a hipótese clínica."
+    },
+    {
+      asked: "Quando pergunta se faltou algo, abre espaço para dados que o paciente não contou espontaneamente.",
+      missed: "Sem essa checagem, informações importantes podem ficar fora da entrevista."
+    },
+    {
+      asked: "Quando orienta com prudência, evita diagnóstico fechado indevido e mantém foco educativo e seguro.",
+      missed: "Sem fechamento prudente, o aluno pode prometer certeza diagnóstica, orientar de forma insegura ou deixar o paciente sem próximos passos."
+    }
+  ]
+};
+
 const finalCriteria = [
   {
     id: "hipotese",
@@ -555,6 +642,11 @@ const promptsEl = document.querySelector("#prompts");
 const finalItemsEl = document.querySelector("#final-items");
 const scoreResult = document.querySelector("#score-result");
 const reportContent = document.querySelector("#report-content");
+const finalAssessmentEl = document.querySelector(".final-assessment");
+const clinicalSynthesisEl = document.querySelector(".clinical-synthesis");
+const printReportEl = document.querySelector("#print-report");
+const totalScoreButton = document.querySelector("#total-score-button");
+const pdfButton = document.querySelector("#pdf-button");
 
 document.querySelector("#case-count").textContent = cases.length;
 
@@ -675,8 +767,19 @@ function renderReport() {
     const stepPercent = Math.round((stepChecked / step.prompts.length) * 100);
     const items = step.prompts.map((prompt, promptIndex) => {
       const id = checkboxId(selectedCase, stepIndex, promptIndex);
-      const marker = checkedItems.has(id) ? "Realizado" : "Pendente";
-      return `<li><strong>${marker}:</strong> ${prompt[0]}</li>`;
+      const wasAsked = checkedItems.has(id);
+      const marker = wasAsked ? "Realizado" : "Pendente";
+      const response = caseResponses[current.title]?.[step.id]?.[promptIndex] ?? prompt[1];
+      const feedback = stepFeedback[step.id][promptIndex];
+      const feedbackText = wasAsked ? feedback.asked : feedback.missed;
+      const feedbackLabel = wasAsked ? "Quando perguntou" : "Consequência de não perguntar";
+      return `
+        <li>
+          <strong>${marker}:</strong> ${prompt[0]}
+          <span class="report-feedback"><strong>Resposta esperada do paciente:</strong> ${response}</span>
+          <span class="report-feedback"><strong>${feedbackLabel}:</strong> ${feedbackText}</span>
+        </li>
+      `;
     }).join("");
 
     return `
@@ -720,6 +823,7 @@ function renderReport() {
 function renderCase() {
   const current = cases[selectedCase];
   const step = steps[selectedStep];
+  const isClosingStep = step.id === "fechamento";
 
   document.querySelector("#case-area").textContent = current.area;
   document.querySelector("#case-title").textContent = current.title;
@@ -739,7 +843,14 @@ function renderCase() {
   renderPrompts();
   renderFinalItems();
   renderReport();
-  scoreResult.textContent = "Aluno-paciente: marque os pontos conforme o entrevistador conduz a entrevista.";
+  clinicalSynthesisEl.classList.toggle("is-hidden", !isClosingStep);
+  finalAssessmentEl.classList.toggle("is-hidden", !isClosingStep);
+  printReportEl.classList.toggle("is-hidden", !isClosingStep);
+  totalScoreButton.classList.toggle("is-hidden", !isClosingStep);
+  pdfButton.classList.toggle("is-hidden", !isClosingStep);
+  scoreResult.textContent = isClosingStep
+    ? "Fechamento: faça as perguntas finais ao aluno-farmacêutico, marque os acertos e calcule a pontuação total."
+    : "Aluno-paciente: marque os pontos conforme o entrevistador conduz a entrevista. Não revele o caso ao aluno-farmacêutico.";
 }
 
 function calculateStepScore() {
