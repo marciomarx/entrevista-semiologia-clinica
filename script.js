@@ -166,11 +166,13 @@ const cases = [
 
 let selectedCase = 0;
 let selectedStep = 0;
+const checkedItems = new Set();
 
 const caseButtons = document.querySelector("#case-buttons");
 const stepTabs = document.querySelector("#step-tabs");
 const promptsEl = document.querySelector("#prompts");
 const scoreResult = document.querySelector("#score-result");
+const reportContent = document.querySelector("#report-content");
 
 document.querySelector("#case-count").textContent = cases.length;
 
@@ -194,6 +196,75 @@ function checkboxId(caseIndex, stepIndex, promptIndex) {
   return `c${caseIndex}-s${stepIndex}-p${promptIndex}`;
 }
 
+function getCaseTotalItems() {
+  return steps.reduce((total, step) => total + step.prompts.length, 0);
+}
+
+function getCaseCheckedItems(caseIndex) {
+  const prefix = `c${caseIndex}-`;
+  return [...checkedItems].filter((item) => item.startsWith(prefix)).length;
+}
+
+function getStepCheckedItems(caseIndex, stepIndex) {
+  const prefix = `c${caseIndex}-s${stepIndex}-`;
+  return [...checkedItems].filter((item) => item.startsWith(prefix)).length;
+}
+
+function getPerformanceMessage(percent) {
+  if (percent >= 85) {
+    return "Entrevista muito bem conduzida.";
+  }
+
+  if (percent >= 60) {
+    return "Boa condução, mas ainda há pontos importantes a completar.";
+  }
+
+  return "Retome as perguntas essenciais antes de concluir.";
+}
+
+function renderReport() {
+  const current = cases[selectedCase];
+  const totalItems = getCaseTotalItems();
+  const checked = getCaseCheckedItems(selectedCase);
+  const percent = Math.round((checked / totalItems) * 100);
+
+  const stepsHtml = steps.map((step, stepIndex) => {
+    const stepChecked = getStepCheckedItems(selectedCase, stepIndex);
+    const stepPercent = Math.round((stepChecked / step.prompts.length) * 100);
+    const items = step.prompts.map((prompt, promptIndex) => {
+      const id = checkboxId(selectedCase, stepIndex, promptIndex);
+      const marker = checkedItems.has(id) ? "Realizado" : "Pendente";
+      return `<li><strong>${marker}:</strong> ${prompt[0]}</li>`;
+    }).join("");
+
+    return `
+      <article class="report-step">
+        <h4>${stepIndex + 1}. ${step.title} - ${stepChecked}/${step.prompts.length} (${stepPercent}%)</h4>
+        <ul>${items}</ul>
+      </article>
+    `;
+  }).join("");
+
+  reportContent.innerHTML = `
+    <div class="report-summary">
+      <div>
+        <span class="label">Caso</span>
+        <strong>${current.title}</strong>
+      </div>
+      <div>
+        <span class="label">Paciente</span>
+        <strong>${current.patient}</strong>
+      </div>
+      <div>
+        <span class="label">Pontuação total</span>
+        <strong>${percent}/100</strong>
+      </div>
+    </div>
+    <p><strong>Resultado:</strong> ${checked}/${totalItems} itens realizados. ${getPerformanceMessage(percent)}</p>
+    ${stepsHtml}
+  `;
+}
+
 function renderCase() {
   const current = cases[selectedCase];
   const step = steps[selectedStep];
@@ -211,9 +282,10 @@ function renderCase() {
 
   promptsEl.innerHTML = step.prompts.map((prompt, index) => {
     const id = checkboxId(selectedCase, selectedStep, index);
+    const checked = checkedItems.has(id) ? "checked" : "";
     return `
       <div class="prompt-item">
-        <input type="checkbox" id="${id}" data-score-item>
+        <input type="checkbox" id="${id}" data-score-item ${checked}>
         <label for="${id}">
           <strong>${prompt[0]}</strong>
           <span>${prompt[1]}</span>
@@ -225,6 +297,7 @@ function renderCase() {
   scoreResult.textContent = "Marque os itens realizados durante a entrevista.";
   renderCaseButtons();
   renderStepTabs();
+  renderReport();
 }
 
 function calculateScore() {
@@ -242,6 +315,15 @@ function calculateScore() {
   }
 
   scoreResult.textContent = message;
+  renderReport();
+}
+
+function calculateTotalScore() {
+  const totalItems = getCaseTotalItems();
+  const checked = getCaseCheckedItems(selectedCase);
+  const percent = Math.round((checked / totalItems) * 100);
+  scoreResult.textContent = `Pontuação total do caso: ${checked}/${totalItems} itens (${percent}/100). ${getPerformanceMessage(percent)}`;
+  renderReport();
 }
 
 caseButtons.addEventListener("click", (event) => {
@@ -260,11 +342,29 @@ stepTabs.addEventListener("click", (event) => {
 });
 
 document.querySelector("#score-button").addEventListener("click", calculateScore);
+document.querySelector("#total-score-button").addEventListener("click", calculateTotalScore);
+document.querySelector("#pdf-button").addEventListener("click", () => {
+  calculateTotalScore();
+  window.print();
+});
+promptsEl.addEventListener("change", (event) => {
+  if (!event.target.matches("[data-score-item]")) return;
+  if (event.target.checked) {
+    checkedItems.add(event.target.id);
+  } else {
+    checkedItems.delete(event.target.id);
+  }
+  renderReport();
+});
 document.querySelector("#reset-button").addEventListener("click", () => {
-  document.querySelectorAll("[data-score-item]").forEach((item) => {
-    item.checked = false;
+  const prefix = `c${selectedCase}-`;
+  [...checkedItems].forEach((item) => {
+    if (item.startsWith(prefix)) {
+      checkedItems.delete(item);
+    }
   });
-  scoreResult.textContent = "Marcações limpas nesta etapa.";
+  renderCase();
+  scoreResult.textContent = "Marcações limpas neste caso.";
 });
 
 renderCase();

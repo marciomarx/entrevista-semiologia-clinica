@@ -85,9 +85,16 @@
         </section>
 
         <section class="score-panel">
-          <button type="button" id="score-button">Calcular desempenho</button>
+          <button type="button" id="score-button">Calcular etapa</button>
+          <button type="button" id="total-score-button">Calcular pontuação total</button>
+          <button type="button" id="pdf-button">Salvar em PDF</button>
           <button type="button" id="reset-button" class="secondary">Limpar marcações</button>
           <p id="score-result" class="score-result">Marque os itens realizados durante a entrevista.</p>
+        </section>
+
+        <section class="print-report" id="print-report" aria-labelledby="relatorio">
+          <h3 id="relatorio">Relatório da entrevista</h3>
+          <div id="report-content"></div>
         </section>
       </section>
     </section>

@@ -247,7 +247,8 @@ main {
 
 .step-panel,
 .clinical-synthesis,
-.score-panel {
+.score-panel,
+.print-report {
   margin-top: 20px;
   padding: 22px;
   border: 1px solid var(--line);
@@ -327,6 +328,8 @@ main {
 }
 
 #score-button,
+#total-score-button,
+#pdf-button,
 .secondary {
   min-height: 44px;
   padding: 10px 16px;
@@ -336,13 +339,19 @@ main {
   font-weight: 800;
 }
 
-#score-button {
+#score-button,
+#total-score-button,
+#pdf-button {
   background: var(--brand);
   color: #ffffff;
 }
 
 #score-button:hover,
-#score-button:focus {
+#score-button:focus,
+#total-score-button:hover,
+#total-score-button:focus,
+#pdf-button:hover,
+#pdf-button:focus {
   background: var(--brand-strong);
 }
 
@@ -356,6 +365,52 @@ main {
   flex-basis: 100%;
   margin: 4px 0 0;
   font-weight: 700;
+}
+
+.print-report {
+  background: #fbfcfd;
+}
+
+.print-report h3 {
+  margin-bottom: 12px;
+}
+
+.report-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.report-summary div,
+.report-step {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.report-summary strong {
+  display: block;
+  color: var(--brand);
+  font-size: 1.35rem;
+}
+
+.report-step {
+  margin-top: 10px;
+}
+
+.report-step h4 {
+  margin: 0 0 8px;
+}
+
+.report-step ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.report-step li {
+  margin: 4px 0;
 }
 
 footer {
@@ -372,7 +427,8 @@ footer {
   .workspace,
   .intro-panel,
   .patient-card,
-  .synthesis-grid {
+  .synthesis-grid,
+  .report-summary {
     grid-template-columns: 1fr;
   }
 
@@ -404,5 +460,56 @@ footer {
 
   .stats {
     grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+    font-size: 12pt;
+  }
+
+  .app-header,
+  .intro-panel,
+  .case-list,
+  .step-tabs,
+  .step-panel,
+  .score-panel,
+  footer {
+    display: none;
+  }
+
+  main {
+    max-width: none;
+    padding: 0;
+  }
+
+  .workspace {
+    display: block;
+    margin: 0;
+  }
+
+  .case-view,
+  .clinical-synthesis,
+  .print-report,
+  .report-summary div,
+  .report-step {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .case-view {
+    padding: 0;
+  }
+
+  .case-heading,
+  .patient-card,
+  .clinical-synthesis,
+  .print-report {
+    break-inside: avoid;
+  }
+
+  .print-report {
+    display: block;
   }
 }
