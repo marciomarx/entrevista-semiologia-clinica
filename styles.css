@@ -246,7 +246,9 @@ main {
 }
 
 .step-panel,
+.patient-script,
 .clinical-synthesis,
+.final-assessment,
 .score-panel,
 .print-report {
   margin-top: 20px;
@@ -257,13 +259,36 @@ main {
 }
 
 .step-copy h3,
-.clinical-synthesis h3 {
+.patient-script h3,
+.clinical-synthesis h3,
+.final-assessment h3 {
   margin-bottom: 8px;
   font-size: 1.18rem;
 }
 
-.step-copy p {
+.step-copy p,
+.privacy-note,
+.final-assessment p {
   color: var(--muted);
+}
+
+.patient-script {
+  border-color: #d6c394;
+  background: #fffaf0;
+}
+
+.script-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.script-grid > div {
+  padding: 16px;
+  border: 1px solid #ead8a6;
+  border-radius: 5px;
+  background: #ffffff;
 }
 
 .prompt-list {
@@ -272,7 +297,8 @@ main {
   margin-top: 18px;
 }
 
-.prompt-item {
+.prompt-item,
+.final-item {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 12px;
@@ -282,24 +308,47 @@ main {
   background: #fbfcfd;
 }
 
-.prompt-item input {
+.prompt-item input,
+.final-item input {
   width: 18px;
   height: 18px;
   margin-top: 4px;
   accent-color: var(--brand);
 }
 
-.prompt-item label {
+.prompt-item label,
+.final-item label {
   cursor: pointer;
 }
 
-.prompt-item strong {
+.prompt-item strong,
+.final-item strong {
   display: block;
   margin-bottom: 4px;
 }
 
-.prompt-item span {
+.prompt-item span,
+.final-item span {
   color: var(--muted);
+}
+
+.final-items {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.final-item {
+  background: var(--teal-soft);
+  border-color: #b8dadd;
+}
+
+.final-item em {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--brand);
+  font-style: normal;
+  font-weight: 800;
 }
 
 .synthesis-grid {
@@ -422,12 +471,18 @@ footer {
   text-align: center;
 }
 
+footer a {
+  color: var(--teal);
+  font-weight: 800;
+}
+
 @media (max-width: 900px) {
   .app-header,
   .workspace,
   .intro-panel,
   .patient-card,
   .synthesis-grid,
+  .script-grid,
   .report-summary {
     grid-template-columns: 1fr;
   }
@@ -474,6 +529,8 @@ footer {
   .case-list,
   .step-tabs,
   .step-panel,
+  .patient-script,
+  .final-assessment,
   .score-panel,
   footer {
     display: none;
