@@ -643,8 +643,9 @@ const finalItemsEl = document.querySelector("#final-items");
 const scoreResult = document.querySelector("#score-result");
 const reportContent = document.querySelector("#report-content");
 const finalAssessmentEl = document.querySelector(".final-assessment");
-const clinicalSynthesisEl = document.querySelector(".clinical-synthesis");
 const printReportEl = document.querySelector("#print-report");
+const stepPanelEl = document.querySelector(".step-panel");
+const nextButton = document.querySelector("#next-button");
 const totalScoreButton = document.querySelector("#total-score-button");
 const pdfButton = document.querySelector("#pdf-button");
 
@@ -708,16 +709,26 @@ function renderCaseButtons() {
 }
 
 function renderStepTabs() {
-  stepTabs.innerHTML = steps.map((step, index) => `
+  const interviewTabs = steps.map((step, index) => `
     <button class="step-tab ${index === selectedStep ? "active" : ""}" type="button" data-step="${index}">
       ${index + 1}. ${step.title}
     </button>
   `).join("");
+  const finalTab = `
+    <button class="step-tab ${selectedStep === steps.length ? "active" : ""}" type="button" data-step="${steps.length}">
+      ${steps.length + 1}. Perguntas finais
+    </button>
+  `;
+  stepTabs.innerHTML = interviewTabs + finalTab;
 }
 
 function renderPrompts() {
   const current = cases[selectedCase];
   const step = steps[selectedStep];
+  if (!step) {
+    promptsEl.innerHTML = "";
+    return;
+  }
   promptsEl.innerHTML = step.prompts.map((prompt, index) => {
     const id = checkboxId(selectedCase, selectedStep, index);
     const checked = checkedItems.has(id) ? "checked" : "";
@@ -823,7 +834,7 @@ function renderReport() {
 function renderCase() {
   const current = cases[selectedCase];
   const step = steps[selectedStep];
-  const isClosingStep = step.id === "fechamento";
+  const isFinalStep = selectedStep === steps.length;
 
   document.querySelector("#case-area").textContent = current.area;
   document.querySelector("#case-title").textContent = current.title;
@@ -832,33 +843,25 @@ function renderCase() {
   document.querySelector("#patient-context").textContent = current.context;
   document.querySelector("#hidden-context").textContent = current.hiddenContext;
   document.querySelector("#acting-rule").textContent = current.actingRule;
-  document.querySelector("#step-title").textContent = step.title;
-  document.querySelector("#step-purpose").textContent = step.purpose;
-  document.querySelector("#hypothesis").textContent = current.hypothesis;
-  document.querySelector("#red-flags").textContent = current.redFlags;
-  document.querySelector("#education").textContent = current.education;
+  if (!isFinalStep) {
+    document.querySelector("#step-title").textContent = step.title;
+    document.querySelector("#step-purpose").textContent = step.purpose;
+  }
 
   renderCaseButtons();
   renderStepTabs();
   renderPrompts();
   renderFinalItems();
   renderReport();
-  clinicalSynthesisEl.classList.toggle("is-hidden", !isClosingStep);
-  finalAssessmentEl.classList.toggle("is-hidden", !isClosingStep);
-  printReportEl.classList.toggle("is-hidden", !isClosingStep);
-  totalScoreButton.classList.toggle("is-hidden", !isClosingStep);
-  pdfButton.classList.toggle("is-hidden", !isClosingStep);
-  scoreResult.textContent = isClosingStep
-    ? "Fechamento: faça as perguntas finais ao aluno-farmacêutico, marque os acertos e calcule a pontuação total."
+  stepPanelEl.classList.toggle("is-hidden", isFinalStep);
+  finalAssessmentEl.classList.toggle("is-hidden", !isFinalStep);
+  printReportEl.classList.toggle("is-hidden", !isFinalStep);
+  nextButton.classList.toggle("is-hidden", isFinalStep);
+  totalScoreButton.classList.toggle("is-hidden", !isFinalStep);
+  pdfButton.classList.toggle("is-hidden", !isFinalStep);
+  scoreResult.textContent = isFinalStep
+    ? "Perguntas finais: peça ao aluno-farmacêutico a hipótese, o problema principal, os sinais de alerta e a orientação. Depois calcule a pontuação."
     : "Aluno-paciente: marque os pontos conforme o entrevistador conduz a entrevista. Não revele o caso ao aluno-farmacêutico.";
-}
-
-function calculateStepScore() {
-  const checked = document.querySelectorAll("[data-score-item]:checked").length;
-  const totalVisible = document.querySelectorAll("[data-score-item]").length;
-  const percent = Math.round((checked / totalVisible) * 100);
-  scoreResult.textContent = `Etapa atual: ${checked}/${totalVisible} itens marcados (${percent}%).`;
-  renderReport();
 }
 
 function calculateTotalScore() {
@@ -902,22 +905,14 @@ finalItemsEl.addEventListener("change", (event) => {
   renderReport();
 });
 
-document.querySelector("#score-button").addEventListener("click", calculateStepScore);
 document.querySelector("#total-score-button").addEventListener("click", calculateTotalScore);
 document.querySelector("#pdf-button").addEventListener("click", () => {
   calculateTotalScore();
   window.print();
 });
-document.querySelector("#reset-button").addEventListener("click", () => {
-  const prefix = `c${selectedCase}-`;
-  [...checkedItems].forEach((item) => {
-    if (item.startsWith(prefix)) checkedItems.delete(item);
-  });
-  [...finalCheckedItems].forEach((item) => {
-    if (item.startsWith(prefix)) finalCheckedItems.delete(item);
-  });
+nextButton.addEventListener("click", () => {
+  selectedStep = Math.min(selectedStep + 1, steps.length);
   renderCase();
-  scoreResult.textContent = "Marcações limpas neste caso.";
 });
 
 renderCase();

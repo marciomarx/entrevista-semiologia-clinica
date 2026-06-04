@@ -27,7 +27,7 @@
       </div>
       <div class="stats">
         <span><strong id="case-count">0</strong> módulos</span>
-        <span><strong>6</strong> etapas</span>
+        <span><strong>7</strong> abas</span>
         <span><strong>70+30</strong> pontos</span>
       </div>
     </section>
@@ -85,24 +85,6 @@
           <div id="prompts" class="prompt-list"></div>
         </article>
 
-        <section class="clinical-synthesis is-hidden" aria-labelledby="sintese">
-          <h3 id="sintese">Síntese clínica</h3>
-          <div class="synthesis-grid">
-            <div>
-              <span class="label">Hipótese orientadora</span>
-              <p id="hypothesis"></p>
-            </div>
-            <div>
-              <span class="label">Sinais de alerta</span>
-              <p id="red-flags"></p>
-            </div>
-            <div>
-              <span class="label">Conduta educativa</span>
-              <p id="education"></p>
-            </div>
-          </div>
-        </section>
-
         <section class="final-assessment is-hidden" aria-labelledby="avaliacao-final">
           <h3 id="avaliacao-final">Perguntas finais ao aluno-farmacêutico</h3>
           <p>Ao terminar a entrevista, o aluno-paciente faz estas perguntas e marca os acertos conforme o gabarito do caso.</p>
@@ -110,10 +92,9 @@
         </section>
 
         <section class="score-panel">
-          <button type="button" id="score-button">Calcular etapa</button>
+          <button type="button" id="next-button">Próximo bloco</button>
           <button type="button" id="total-score-button" class="is-hidden">Calcular pontuação total</button>
           <button type="button" id="pdf-button" class="is-hidden">Salvar em PDF</button>
-          <button type="button" id="reset-button" class="secondary">Limpar marcações</button>
           <p id="score-result" class="score-result">Marque os itens realizados durante a entrevista.</p>
         </section>
 

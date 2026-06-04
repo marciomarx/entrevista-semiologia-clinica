@@ -400,7 +400,7 @@ main {
   background: var(--amber-soft);
 }
 
-#score-button,
+#next-button,
 #total-score-button,
 #pdf-button,
 .secondary {
@@ -412,15 +412,15 @@ main {
   font-weight: 800;
 }
 
-#score-button,
+#next-button,
 #total-score-button,
 #pdf-button {
   background: var(--brand);
   color: #ffffff;
 }
 
-#score-button:hover,
-#score-button:focus,
+#next-button:hover,
+#next-button:focus,
 #total-score-button:hover,
 #total-score-button:focus,
 #pdf-button:hover,
@@ -535,6 +535,10 @@ footer a {
 }
 
 @media (max-width: 620px) {
+  body {
+    font-size: 15px;
+  }
+
   .app-header,
   main,
   footer {
@@ -542,13 +546,87 @@ footer a {
     padding-right: 14px;
   }
 
+  .app-header {
+    gap: 16px;
+    padding-top: 28px;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
   .case-view,
-  .intro-panel {
-    padding: 18px;
+  .intro-panel,
+  .case-list {
+    padding: 16px;
   }
 
   .stats {
     grid-template-columns: 1fr;
+  }
+
+  .case-buttons {
+    max-height: 48vh;
+    overflow-y: auto;
+  }
+
+  .case-button {
+    min-height: 48px;
+  }
+
+  .patient-card,
+  .script-grid,
+  .synthesis-grid,
+  .report-summary {
+    gap: 10px;
+  }
+
+  .step-tabs {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 0 16px 10px;
+    scroll-snap-type: x proximity;
+  }
+
+  .step-tab {
+    min-height: 42px;
+    scroll-snap-align: start;
+    white-space: nowrap;
+  }
+
+  .prompt-item,
+  .final-item {
+    grid-template-columns: 22px minmax(0, 1fr);
+    padding: 12px;
+  }
+
+  .score-panel {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-bottom: -16px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: 0 -10px 26px rgba(29, 39, 51, 0.12);
+  }
+
+  #next-button,
+  #total-score-button,
+  #pdf-button {
+    width: 100%;
+  }
+
+  .score-result {
+    font-size: 0.92rem;
   }
 }
 
