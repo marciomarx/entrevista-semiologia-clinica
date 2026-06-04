@@ -648,7 +648,7 @@ const stepPanelEl = document.querySelector(".step-panel");
 const nextButton = document.querySelector("#next-button");
 const totalScoreButton = document.querySelector("#total-score-button");
 const pdfButton = document.querySelector("#pdf-button");
-const whatsappButton = document.querySelector("#whatsapp-button");
+const exportButton = document.querySelector("#export-button");
 
 document.querySelector("#case-count").textContent = cases.length;
 
@@ -860,7 +860,7 @@ function renderCase() {
   nextButton.classList.toggle("is-hidden", isFinalStep);
   totalScoreButton.classList.toggle("is-hidden", !isFinalStep);
   pdfButton.classList.toggle("is-hidden", !isFinalStep);
-  whatsappButton.classList.toggle("is-hidden", !isFinalStep);
+  exportButton.classList.toggle("is-hidden", !isFinalStep);
   scoreResult.textContent = isFinalStep
     ? "Perguntas finais: peça ao aluno-farmacêutico a hipótese, o problema principal, os sinais de alerta e a orientação. Depois calcule a pontuação."
     : "Aluno-paciente: marque os pontos conforme o entrevistador conduz a entrevista. Não revele o caso ao aluno-farmacêutico.";
@@ -872,7 +872,7 @@ function calculateTotalScore() {
   renderReport();
 }
 
-function buildWhatsAppText() {
+function buildExportText() {
   const current = cases[selectedCase];
   const scores = getScores(selectedCase);
   const finalLines = finalCriteria.map((criterion) => {
@@ -944,10 +944,30 @@ document.querySelector("#pdf-button").addEventListener("click", () => {
   calculateTotalScore();
   window.print();
 });
-whatsappButton.addEventListener("click", () => {
+exportButton.addEventListener("click", async () => {
   calculateTotalScore();
-  const url = `https://wa.me/?text=${encodeURIComponent(buildWhatsAppText())}`;
-  window.open(url, "_blank", "noopener");
+  const text = buildExportText();
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "Relatório da entrevista clínica",
+        text
+      });
+      return;
+    }
+
+    await navigator.clipboard.writeText(text);
+    scoreResult.textContent = "Relatório copiado. Agora você pode colar no WhatsApp ou em outro aplicativo.";
+  } catch (error) {
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "relatorio-entrevista-clinica.txt";
+    link.click();
+    URL.revokeObjectURL(url);
+    scoreResult.textContent = "Relatório exportado como arquivo de texto.";
+  }
 });
 nextButton.addEventListener("click", () => {
   selectedStep = Math.min(selectedStep + 1, steps.length);
