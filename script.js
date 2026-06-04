@@ -648,6 +648,7 @@ const stepPanelEl = document.querySelector(".step-panel");
 const nextButton = document.querySelector("#next-button");
 const totalScoreButton = document.querySelector("#total-score-button");
 const pdfButton = document.querySelector("#pdf-button");
+const whatsappButton = document.querySelector("#whatsapp-button");
 
 document.querySelector("#case-count").textContent = cases.length;
 
@@ -859,6 +860,7 @@ function renderCase() {
   nextButton.classList.toggle("is-hidden", isFinalStep);
   totalScoreButton.classList.toggle("is-hidden", !isFinalStep);
   pdfButton.classList.toggle("is-hidden", !isFinalStep);
+  whatsappButton.classList.toggle("is-hidden", !isFinalStep);
   scoreResult.textContent = isFinalStep
     ? "Perguntas finais: peça ao aluno-farmacêutico a hipótese, o problema principal, os sinais de alerta e a orientação. Depois calcule a pontuação."
     : "Aluno-paciente: marque os pontos conforme o entrevistador conduz a entrevista. Não revele o caso ao aluno-farmacêutico.";
@@ -868,6 +870,38 @@ function calculateTotalScore() {
   const scores = getScores(selectedCase);
   scoreResult.textContent = `Pontuação total: ${scores.total}/100. Entrevista: ${scores.interviewScore}/70. Raciocínio final: ${scores.finalScore}/30. ${getPerformanceMessage(scores.total)}`;
   renderReport();
+}
+
+function buildWhatsAppText() {
+  const current = cases[selectedCase];
+  const scores = getScores(selectedCase);
+  const finalLines = finalCriteria.map((criterion) => {
+    const status = finalCheckedItems.has(finalId(selectedCase, criterion.id)) ? "acertou" : "não pontuou";
+    return `- ${criterion.label}: ${status} (${criterion.points} pts)`;
+  }).join("\n");
+
+  const stepLines = steps.map((step, index) => {
+    const checked = getStepCheckedItems(selectedCase, index);
+    return `- ${step.title}: ${checked}/${step.prompts.length}`;
+  }).join("\n");
+
+  return [
+    "Relatório da entrevista clínica",
+    `Caso: ${current.title}`,
+    `Paciente simulado: ${current.patient}`,
+    "",
+    `Pontuação total: ${scores.total}/100`,
+    `Entrevista: ${scores.interviewScore}/70 (${scores.checked}/${scores.interviewItems} itens)`,
+    `Raciocínio final: ${scores.finalScore}/30`,
+    "",
+    "Pontuação por bloco:",
+    stepLines,
+    "",
+    "Perguntas finais:",
+    finalLines,
+    "",
+    getPerformanceMessage(scores.total)
+  ].join("\n");
 }
 
 caseButtons.addEventListener("click", (event) => {
@@ -909,6 +943,11 @@ document.querySelector("#total-score-button").addEventListener("click", calculat
 document.querySelector("#pdf-button").addEventListener("click", () => {
   calculateTotalScore();
   window.print();
+});
+whatsappButton.addEventListener("click", () => {
+  calculateTotalScore();
+  const url = `https://wa.me/?text=${encodeURIComponent(buildWhatsAppText())}`;
+  window.open(url, "_blank", "noopener");
 });
 nextButton.addEventListener("click", () => {
   selectedStep = Math.min(selectedStep + 1, steps.length);
