@@ -221,6 +221,329 @@ const cases = [
   }
 ];
 
+const caseResponses = {
+  "Hipertensão arterial sistêmica": {
+    abertura: [
+      "Meu nome é Roberto Almeida, tenho 58 anos e trabalho como motorista de aplicativo.",
+      "Vim porque minha pressão tem aparecido alta em algumas medições e fiquei preocupado.",
+      "Pode perguntar, sim. Eu só queria entender se isso é grave e o que estou fazendo errado."
+    ],
+    queixa: [
+      "Percebi nas últimas três semanas. Às vezes dá 15 por 9, 16 por 10, mas não me sinto tão mal.",
+      "Não sinto dor forte. Às vezes fico com uma pressão na cabeça, principalmente quando estou cansado.",
+      "Não tive falta de ar, desmaio, dor no peito nem formigamento. Minha visão às vezes fica cansada, mas nada súbito."
+    ],
+    medicamentos: [
+      "Tomo losartana, mas confesso que esqueço alguns dias, principalmente quando saio cedo para trabalhar.",
+      "Não tomo remédio por conta para pressão. Às vezes tomo um anti-inflamatório para dor no joelho.",
+      "Não tenho alergia conhecida a medicamentos."
+    ],
+    contexto: [
+      "Meu pai teve infarto com pouco mais de 60 anos. Eu já ouvi que minha pressão era alta antes.",
+      "Como bastante comida salgada na rua, faço pouca atividade física e tomo café várias vezes ao dia. Não fumo.",
+      "Minha rotina é corrida. Fico muitas horas sentado e acabo medindo a pressão depois de café ou caminhada."
+    ],
+    alerta: [
+      "Não tive dor no peito, falta de ar, fraqueza de um lado do corpo, confusão ou alteração visual de repente.",
+      "A última medida foi 16 por 10. Eu tinha tomado café e estava andando antes de medir.",
+      "Se você explicar esses sinais, eu entendo que nesses casos eu deveria procurar atendimento rápido."
+    ],
+    fechamento: [
+      "Isso faz sentido. Eu realmente não tomo o remédio certinho e meço a pressão meio de qualquer jeito.",
+      "Acho importante falar que minha alimentação tem muito sal e minha rotina dificulta cuidar disso.",
+      "Entendi que preciso medir melhor, registrar os valores e não parar o remédio por conta própria."
+    ]
+  },
+  "Diabetes mellitus tipo 2": {
+    abertura: [
+      "Meu nome é Helena Duarte, tenho 62 anos e sou aposentada.",
+      "Vim porque estou com muita sede, urinando muito à noite e minha glicose deu alta.",
+      "Tudo bem, pode perguntar. Eu quero saber se esses sintomas têm relação com o açúcar no sangue."
+    ],
+    queixa: [
+      "Começou há uns dois meses, mas nas últimas semanas ficou mais frequente.",
+      "Tenho sede quase o dia todo e acordo duas ou três vezes à noite para urinar. Melhora um pouco quando bebo água.",
+      "Tenho cansaço, visão embaçada às vezes e um formigamento leve nos pés. Não tive vômitos."
+    ],
+    medicamentos: [
+      "Uso metformina, mas às vezes esqueço, principalmente a dose da noite.",
+      "Tomo chás para 'baixar açúcar', mas não sei se ajudam. Não uso insulina.",
+      "Não tenho alergias que eu saiba."
+    ],
+    contexto: [
+      "Minha mãe tinha diabetes. Eu também tenho pressão alta.",
+      "Tenho comido muito pão e doces. Caminho pouco porque sinto cansaço.",
+      "O cansaço atrapalha minhas tarefas, e acordar à noite está prejudicando meu sono."
+    ],
+    alerta: [
+      "Não tive vômitos, sonolência forte, respiração estranha ou confusão. Só muita sede e urina.",
+      "A glicemia na farmácia deu 268 mg/dL depois do almoço. Em jejum já deu perto de 180 mg/dL.",
+      "Entendo que se eu ficar sonolenta, desidratada ou vomitando devo procurar atendimento."
+    ],
+    fechamento: [
+      "Você entendeu bem: estou com sede, urinando muito e não tomo a metformina sempre direito.",
+      "Também queria dizer que estou preocupada com o formigamento nos pés.",
+      "Entendi que preciso acompanhar melhor, registrar glicemias e conversar com meu médico."
+    ]
+  },
+  "Obesidade e síndrome metabólica": {
+    abertura: [
+      "Meu nome é Carla Menezes, tenho 44 anos e trabalho em escritório.",
+      "Vim porque ganhei peso, estou muito cansada e meus exames vieram alterados.",
+      "Pode perguntar, mas eu fico um pouco desconfortável quando o assunto é peso."
+    ],
+    queixa: [
+      "O ganho de peso foi acontecendo nos últimos anos, mas piorou no último ano.",
+      "Sinto cansaço quase todos os dias. Piora quando subo escadas e melhora quando descanso.",
+      "Tenho sono ruim, ronco segundo meu marido e às vezes sinto dor nos joelhos."
+    ],
+    medicamentos: [
+      "Não uso remédio fixo para emagrecer. Já tentei alguns produtos naturais por conta própria.",
+      "Já tomei chás e cápsulas que comprei pela internet, mas parei porque não vi resultado.",
+      "Não tenho alergia conhecida."
+    ],
+    contexto: [
+      "Minha mãe tem diabetes e meu pai tem pressão alta. Meus triglicerídeos vieram altos.",
+      "Fico muito tempo sentada, como rápido e belisco à noite. Não fumo e bebo pouco.",
+      "Tenho evitado sair e fazer atividade física por vergonha e por cansaço."
+    ],
+    alerta: [
+      "Não sinto dor no peito. Tenho falta de ar só em esforço maior. Não tive desmaios.",
+      "Minha pressão deu 14 por 9 em uma consulta. A cintura também aumentou bastante.",
+      "Se tivesse dor no peito, falta de ar importante ou piora rápida, eu procuraria atendimento."
+    ],
+    fechamento: [
+      "Sim, o ponto principal é que meu peso e meus exames estão me preocupando.",
+      "Queria acrescentar que quando me sinto julgada eu acabo desistindo de procurar ajuda.",
+      "Gostei quando você falou em metas possíveis, porque dietas muito rígidas eu não consigo manter."
+    ]
+  },
+  "Dislipidemias": {
+    abertura: [
+      "Meu nome é Paulo Nogueira, tenho 51 anos e sou gerente comercial.",
+      "Vim por causa dos exames de colesterol, principalmente o LDL, que veio alto.",
+      "Pode perguntar. Tenho dúvidas porque fiquei com medo do remédio."
+    ],
+    queixa: [
+      "Descobri no exame de rotina do mês passado. Eu não sinto nada específico.",
+      "Não tenho dor, mas fiquei preocupado porque o médico falou em risco para o coração.",
+      "Não tive dor no peito, falta de ar ou desmaio."
+    ],
+    medicamentos: [
+      "O médico passou estatina, mas eu parei depois de umas duas semanas.",
+      "Parei porque li na internet que poderia fazer mal ao fígado e dar dor muscular. Não falei com o médico ainda.",
+      "Não tenho alergias conhecidas."
+    ],
+    contexto: [
+      "Meu pai teve AVC. Eu estou acima do peso e meu LDL veio bem alto.",
+      "Como muita comida pronta, carne gordurosa e pouca verdura. Faço pouca atividade física.",
+      "Na rotina eu viajo muito a trabalho, então acabo comendo em estrada e restaurante."
+    ],
+    alerta: [
+      "Não tive dor no peito, fraqueza de um lado do corpo, fala enrolada ou dor forte na perna ao caminhar.",
+      "O LDL veio 182 mg/dL. Não lembro todos os valores, mas o triglicerídeo também estava alto.",
+      "Entendo que sintomas como dor no peito ou sinais neurológicos seriam urgência."
+    ],
+    fechamento: [
+      "Você entendeu: o problema não é um sintoma, é meu risco e eu ter parado o remédio.",
+      "Acho importante dizer que minha decisão veio de medo, não de efeito colateral real.",
+      "Entendi que preciso conversar com o médico antes de parar e cuidar da alimentação."
+    ]
+  },
+  "Asma": {
+    abertura: [
+      "Meu nome é Letícia Souza, tenho 27 anos e sou professora.",
+      "Vim porque estou tossindo, com chiado e usando a bombinha mais do que antes.",
+      "Pode perguntar. Eu queria saber se estou usando a bombinha direito."
+    ],
+    queixa: [
+      "Piorou nos últimos dois meses, principalmente à noite e quando faço esforço.",
+      "A tosse é frequente e o chiado aparece quando subo escada. A bombinha azul melhora, mas volta depois.",
+      "Tenho aperto no peito às vezes. Não tive febre nem catarro amarelo."
+    ],
+    medicamentos: [
+      "Uso salbutamol quando falta ar e tenho uma bombinha de corticoide para usar todos os dias, mas esqueço.",
+      "Não uso espaçador. Às vezes aperto a bombinha e respiro rápido, sem coordenar muito.",
+      "Não tenho alergia a remédios conhecida."
+    ],
+    contexto: [
+      "Tenho rinite e minha mãe também tinha chiado no peito.",
+      "Piora com poeira, mofo e exercício. Não fumo.",
+      "A tosse atrapalha minhas aulas e meu sono."
+    ],
+    alerta: [
+      "Hoje consigo falar frases completas. Não fiquei roxa nem sonolenta, mas já acordei à noite com falta de ar.",
+      "Não medi saturação hoje. Em uma crise anterior já deu 93%.",
+      "Entendo que se eu não melhorar com a bombinha, tiver dificuldade para falar ou ficar muito cansada, devo procurar urgência."
+    ],
+    fechamento: [
+      "Sim, eu uso muito a bombinha de alívio e esqueço a de controle.",
+      "Também acho que minha técnica pode estar errada porque nunca me ensinaram direito.",
+      "Entendi que preciso revisar a técnica, usar o controlador e ter um plano para crises."
+    ]
+  },
+  "Doença pulmonar obstrutiva crônica": {
+    abertura: [
+      "Meu nome é João Batista, tenho 68 anos e sou aposentado.",
+      "Vim porque estou cansando mais para caminhar e tenho tosse há muito tempo.",
+      "Pode perguntar. Eu achava que era só idade, mas está incomodando."
+    ],
+    queixa: [
+      "A falta de ar vem piorando há anos, mas nos últimos meses ficou mais clara.",
+      "Piora quando subo ladeira ou caminho rápido. Melhora quando paro para descansar.",
+      "Tenho tosse com catarro pela manhã. Não tive dor no peito forte."
+    ],
+    medicamentos: [
+      "Tenho um inalador, mas uso só quando lembro ou quando falta mais ar.",
+      "Não uso remédios por conta para respirar. Às vezes tomo xarope quando a tosse incomoda.",
+      "Não lembro de alergia a medicamentos."
+    ],
+    contexto: [
+      "Fumei por quase 40 anos e parei há cinco anos. Meu irmão também tinha problema respiratório.",
+      "Faço pouca atividade física. Vacina de gripe eu tomo alguns anos, outros esqueço.",
+      "A falta de ar limita caminhada, mercado e tarefas simples."
+    ],
+    alerta: [
+      "Não estou com falta de ar parado agora. Não tive confusão nem lábios roxos.",
+      "Não sei minha saturação hoje. Quando tive piora com infecção, o catarro ficou mais escuro.",
+      "Entendo que se tiver falta de ar em repouso, febre forte ou catarro purulento devo procurar atendimento."
+    ],
+    fechamento: [
+      "Você entendeu bem: é uma falta de ar crônica que piora com esforço.",
+      "Acho importante falar que usei cigarro por muitos anos.",
+      "Entendi que preciso usar o inalador corretamente, vacinar e reconhecer pioras."
+    ]
+  },
+  "Dengue e arboviroses": {
+    abertura: [
+      "Meu nome é Marina Costa, tenho 34 anos e trabalho em uma escola.",
+      "Vim porque estou com febre, muita dor no corpo e dor de cabeça.",
+      "Pode perguntar. Estou preocupada porque muita gente no meu bairro ficou doente."
+    ],
+    queixa: [
+      "Começou há dois dias, de repente, com febre e dor no corpo.",
+      "A dor é forte, principalmente no corpo e atrás dos olhos. Melhora um pouco com repouso.",
+      "Tenho náusea leve, mas não vomitei. Não estou com tosse importante."
+    ],
+    medicamentos: [
+      "Tomei ibuprofeno por conta própria ontem porque a dor estava forte.",
+      "Também tomei dipirona uma vez. Não usei antibiótico.",
+      "Não tenho alergia conhecida."
+    ],
+    contexto: [
+      "Não tenho doenças importantes. No meu bairro tem muitos casos parecidos.",
+      "Estou bebendo pouca água porque fico enjoada. Não fumo.",
+      "Estou sem trabalhar desde ontem porque a dor no corpo é intensa."
+    ],
+    alerta: [
+      "Não tive sangramento, dor abdominal forte, tontura intensa nem vômitos repetidos.",
+      "A febre chegou a 38,8 °C. Não medi pressão hoje.",
+      "Entendo que sangramento, dor abdominal forte, vômitos ou tontura seriam sinais para procurar serviço de saúde."
+    ],
+    fechamento: [
+      "Isso mesmo: comecei com febre e dor forte no corpo há dois dias.",
+      "Acho importante lembrar que tomei ibuprofeno sem orientação.",
+      "Entendi que devo hidratar, evitar anti-inflamatório e observar sinais de alarme."
+    ]
+  },
+  "Infecções respiratórias agudas": {
+    abertura: [
+      "Meu nome é Rafael Lima, tenho 39 anos e trabalho em vendas.",
+      "Vim porque estou tossindo, com coriza e queria saber se preciso de antibiótico.",
+      "Pode perguntar, mas eu já tive isso antes e acho que antibiótico resolve rápido."
+    ],
+    queixa: [
+      "Começou há três dias com coriza, garganta arranhando e tosse seca.",
+      "A febre foi baixa, perto de 37,8 °C. Piora à noite e melhora com repouso e líquidos.",
+      "Não tenho falta de ar, dor no peito ou chiado. O nariz está escorrendo bastante."
+    ],
+    medicamentos: [
+      "Tomei antigripal por conta própria e pastilha para garganta.",
+      "Não comecei antibiótico ainda, mas queria comprar.",
+      "Não tenho alergia a medicamentos que eu saiba."
+    ],
+    contexto: [
+      "Meu filho ficou resfriado semana passada. Não tenho doença pulmonar.",
+      "Durmo pouco e trabalho falando bastante. Não fumo.",
+      "A tosse atrapalha o trabalho, mas consigo fazer minhas atividades."
+    ],
+    alerta: [
+      "Não tive falta de ar, confusão, febre alta persistente nem piora depois de melhorar.",
+      "Não medi saturação. A febre foi baixa e passou com antitérmico.",
+      "Entendo que falta de ar, dor no peito ou febre alta persistente mudariam a conduta."
+    ],
+    fechamento: [
+      "Entendi que meu quadro parece mais leve e recente.",
+      "Também entendi que antibiótico não é sempre necessário para tosse e coriza.",
+      "Vou observar sinais de piora, hidratar e procurar atendimento se aparecer alerta."
+    ]
+  },
+  "Ansiedade, insônia e sofrimento psíquico": {
+    abertura: [
+      "Meu nome é Bianca Rocha, tenho 31 anos e sou analista administrativa.",
+      "Vim porque não estou dormindo bem, sinto palpitações e estou muito preocupada.",
+      "Pode perguntar. É um pouco difícil falar disso, mas eu preciso de ajuda."
+    ],
+    queixa: [
+      "Começou há uns três meses, depois que aumentou a pressão no trabalho.",
+      "A insônia acontece quase toda noite. Demoro para dormir e acordo cansada.",
+      "Tenho aperto no peito quando fico nervosa, palpitações e pensamentos acelerados."
+    ],
+    medicamentos: [
+      "Não uso remédio controlado. Às vezes tomo bebida alcoólica para tentar relaxar.",
+      "Já pensei em tomar calmante de outra pessoa, mas não cheguei a tomar.",
+      "Não tenho alergias conhecidas."
+    ],
+    contexto: [
+      "Minha mãe teve depressão. Eu já tive crises de ansiedade antes, mas mais leves.",
+      "Tenho dormido pouco, tomado muito café e quase não faço atividade física.",
+      "Está afetando meu trabalho e minha relação em casa. Choro com facilidade."
+    ],
+    alerta: [
+      "Não tenho plano de me machucar, mas em alguns dias penso que não aguento mais essa rotina.",
+      "Não tive desmaio. As palpitações passam quando consigo me acalmar.",
+      "Entendo que se eu pensar em me ferir ou perder o controle devo procurar ajuda imediatamente."
+    ],
+    fechamento: [
+      "Você entendeu: o sono ruim e a ansiedade estão atrapalhando minha vida.",
+      "Acho importante falar que eu estava tentando resolver sozinha com álcool e café demais.",
+      "Entendi que preciso de apoio, evitar automedicação e procurar acompanhamento."
+    ]
+  },
+  "Gastrite, refluxo e uso inadequado de antiácidos/IBP": {
+    abertura: [
+      "Meu nome é Eduardo Martins, tenho 46 anos e sou técnico de manutenção.",
+      "Vim porque sinto queimação no estômago e no peito, principalmente depois de comer.",
+      "Pode perguntar. Eu tomo omeprazol faz tempo, mas não sei se estou usando certo."
+    ],
+    queixa: [
+      "A queimação vem há meses. Piora quando como muito, tomo café ou deito logo depois.",
+      "A sensação sobe para o peito e garganta. Melhora parcialmente com omeprazol.",
+      "Não tive vômito com sangue, fezes pretas ou perda de peso importante."
+    ],
+    medicamentos: [
+      "Tomo omeprazol quase todo dia por conta própria há vários meses.",
+      "Também tomo anti-inflamatório quando minha lombar ataca.",
+      "Não tenho alergia conhecida."
+    ],
+    contexto: [
+      "Não tenho doença grave conhecida. Meu pai teve úlcera.",
+      "Tomo bastante café, como tarde da noite e às vezes bebo nos fins de semana.",
+      "A queimação atrapalha o sono quando deito logo depois de jantar."
+    ],
+    alerta: [
+      "Não tenho dificuldade para engolir, anemia conhecida, perda de peso, sangue nas fezes ou vômitos persistentes.",
+      "Não fiz exames recentes. A dor não é forte como aperto no peito de esforço.",
+      "Entendo que sangue, perda de peso, anemia ou dificuldade para engolir exigem avaliação rápida."
+    ],
+    fechamento: [
+      "Isso mesmo: eu uso omeprazol por conta e também anti-inflamatório às vezes.",
+      "Acho importante falar que café e deitar depois de comer pioram bastante.",
+      "Entendi que preciso rever o uso do remédio e procurar avaliação se persistir ou tiver sinais de alerta."
+    ]
+  }
+};
+
 let selectedCase = 0;
 let selectedStep = 0;
 const checkedItems = new Set();
@@ -301,16 +624,18 @@ function renderStepTabs() {
 }
 
 function renderPrompts() {
+  const current = cases[selectedCase];
   const step = steps[selectedStep];
   promptsEl.innerHTML = step.prompts.map((prompt, index) => {
     const id = checkboxId(selectedCase, selectedStep, index);
     const checked = checkedItems.has(id) ? "checked" : "";
+    const response = caseResponses[current.title]?.[step.id]?.[index] ?? prompt[1];
     return `
       <div class="prompt-item">
         <input type="checkbox" id="${id}" data-score-item ${checked}>
         <label for="${id}">
           <strong>${prompt[0]}</strong>
-          <span>${prompt[1]}</span>
+          <span><b>Resposta do aluno-paciente:</b> ${response}</span>
         </label>
       </div>
     `;
