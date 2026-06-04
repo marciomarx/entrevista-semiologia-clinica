@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrevista Clínica em Semiologia</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Simulador acadêmico</p>
+      <h1>Entrevista Clínica em Semiologia</h1>
+      <p class="lead">Treinamento guiado de anamnese, raciocínio clínico e identificação de sinais de alerta para estudantes da área da saúde.</p>
+    </div>
+    <aside class="header-card">
+      <strong>Base pedagógica</strong>
+      <span>Entrevista clínica estruturada, linguagem original e organização inspirada na semiologia clássica.</span>
+    </aside>
+  </header>
+
+  <main>
+    <section class="intro-panel" aria-labelledby="como-usar">
+      <div>
+        <h2 id="como-usar">Como usar em sala</h2>
+        <p>Escolha uma condição clínica, conduza a entrevista por etapas e marque as ações realizadas. Ao final, o simulador gera uma síntese com pontos fortes, lacunas e próximos passos de orientação.</p>
+      </div>
+      <div class="stats">
+        <span><strong id="case-count">0</strong> módulos</span>
+        <span><strong>6</strong> etapas</span>
+        <span><strong>100</strong> pontos</span>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="case-list" aria-labelledby="modulos">
+        <h2 id="modulos">Módulos clínicos</h2>
+        <div id="case-buttons" class="case-buttons"></div>
+      </aside>
+
+      <section class="case-view" aria-live="polite">
+        <div class="case-heading">
+          <p class="eyebrow" id="case-area">Semiologia</p>
+          <h2 id="case-title">Selecione um módulo</h2>
+          <p id="case-summary">O roteiro da entrevista aparecerá aqui.</p>
+        </div>
+
+        <div class="patient-card">
+          <div>
+            <span class="label">Paciente simulado</span>
+            <strong id="patient-name">-</strong>
+          </div>
+          <div>
+            <span class="label">Contexto</span>
+            <strong id="patient-context">-</strong>
+          </div>
+        </div>
+
+        <nav class="step-tabs" id="step-tabs" aria-label="Etapas da entrevista"></nav>
+
+        <article class="step-panel">
+          <div class="step-copy">
+            <h3 id="step-title">Etapa</h3>
+            <p id="step-purpose">Objetivo da etapa.</p>
+          </div>
+          <div id="prompts" class="prompt-list"></div>
+        </article>
+
+        <section class="clinical-synthesis" aria-labelledby="sintese">
+          <h3 id="sintese">Síntese clínica</h3>
+          <div class="synthesis-grid">
+            <div>
+              <span class="label">Hipótese orientadora</span>
+              <p id="hypothesis"></p>
+            </div>
+            <div>
+              <span class="label">Sinais de alerta</span>
+              <p id="red-flags"></p>
+            </div>
+            <div>
+              <span class="label">Conduta educativa</span>
+              <p id="education"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="score-panel">
+          <button type="button" id="score-button">Calcular desempenho</button>
+          <button type="button" id="reset-button" class="secondary">Limpar marcações</button>
+          <p id="score-result" class="score-result">Marque os itens realizados durante a entrevista.</p>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    Material acadêmico autoral para treinamento. Não substitui avaliação clínica, protocolos institucionais ou atendimento profissional.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
